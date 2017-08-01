@@ -15,7 +15,7 @@ Visit the [<b>pi-top</b>SPEAKER product page](https://pi-top.com/products/access
 	* [Links](#support-links)
 	* [Troubleshooting](#support-troubleshooting)
 
-## Quick Start <a name="quick-start"></a>
+## <a name="quick-start"></a> Quick Start
 ### pi-topOS
 * Boot into <b>pi-top</b>OS
 * Plug in <b>pi-top</b>SPEAKER
@@ -33,7 +33,7 @@ sudo apt install pt-speaker
 * Reboot (if instructed to do so - you should only need to do this the first time)
 * Enjoy!
 
-## Hardware Overview <a name="hardware"></a>
+## <a name="hardware"></a> Hardware Overview
 
 <b>pi-top</b>SPEAKER is a modular, <b>pi-top</b>/<b>pi-top</b>CEED compatible speaker add-on board that is designed to fit onto a <b>pi-top</b>/<b>pi-top</b>CEED's modular rail, and can be connected with up to 2 other <b>pi-top</b>SPEAKERs in a chain. Each device has a 3-position hardware switch that the user can set to select L, M or R - left channel, mono mix or right channel respectively. <b>pi-top</b>SPEAKER needs to be initialised each time it is powered in order to function.
 
@@ -55,9 +55,9 @@ As mentioned earlier, <b>pi-top</b>SPEAKER needs to be initialised each time it 
 ### Advanced Configuration
 See the [Manual Initialisation wiki page](https://github.com/<b>pi-top</b>/<b>pi-top</b>SPEAKER/wiki/Manual-Initialisation) for this repository.
 
-## Software <a name="software"></a>
+## <a name="software"></a> Software
 
-### pi-topSPEAKER on pi-topOS <a name="software-pt-os"></a>
+### <a name="software-pt-os"></a> pi-topSPEAKER on pi-topOS
 
 All <b>pi-top</b>SPEAKER software and libraries are included and configured 'out-of-the-box' as standard on the latest version of <b>pi-top</b>OS (>= 23-06-2017). Simply connect a <b>pi-top</b>SPEAKER to your <b>pi-top</b> and - so long as you are using the default sound drivers - it will be automatically initialised and ready to make noises using the audio channel of the HDMI connection to the <b>pi-top</b>/<b>pi-top</b>CEED hub mk1. Volume control is handled by the operating system.
 
@@ -68,7 +68,7 @@ Download the latest version of <b>pi-top</b>OS [here](https://pi-top.com/product
 #### Technical Details
 This automatic initialisation is done by a software package called `pt-peripheral-cfg`. This contains a program called `pt-peripherals-daemon`, which runs in the background, scanning for newly connected devices. If a device is detected, and the appropriate library is installed allow it to be initialised, it will run the approprate command. The `pt-speaker` package on <b>pi-top</b>OS installs and starts this background process, as well as the Python library to allow the <b>pi-top</b>SPEAKER to be initialised when detected. In the case of <b>pi-top</b>SPEAKER, it checks the I2C lines, and - on detection - will ensure that HDMI is set as audio output, and initialise.
 
-### pi-topSPEAKER on Raspbian <a name="software-raspbian"></a>
+### <a name="software-raspbian"></a> pi-topSPEAKER on Raspbian
 
 You can add <b>pi-top</b>SPEAKER support to Raspbian by installing the `pt-speaker` software package. Then, everything will work in the same plug-and-play way as on <b>pi-top</b>OS. To do this, simply run the following commands at the terminal:
 
@@ -78,17 +78,17 @@ sudo apt install pt-speaker
 sudo reboot
 ```
 
-### Manual Installation <a name="software-pt-os"></a>
+### <a name="software-pt-os"></a> Manual Installation
 
 For more information about how the <b>pi-top</b>SPEAKER is initialised, and how you can do this manually, see the wiki page [here](https://github.com/pi-top/pi-topSPEAKER/wiki/Manual-Initialisation).
 
-## Documentation & Support <a name="support"></a>
+## <a name="support"></a> Documentation & Support
 
-### Useful Links <a name="support-links"></a>
+### <a name="support-links"></a> Useful Links
 
 * [Support](https://support.pi-top.com/)
 
-### Troubleshooting FAQ <a name="support-troubleshooting"></a>
+### <a name="support-troubleshooting"></a> Troubleshooting FAQ
 
 #### My pi-topSPEAKER is not working - what can I try?
 
