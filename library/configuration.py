@@ -67,9 +67,11 @@ def set_audio_output_hdmi():
         interface = None
 
         if sys.version_info < (3, 0):
-            mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3']).splitlines()
+            with open(os.devnull, 'w') as FNULL:
+                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stdout=FNULL).splitlines()
         else:
-            mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3']).decode("utf-8").splitlines()
+            with open(os.devnull, 'w') as FNULL:
+                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stdout=FNULL).decode("utf-8").splitlines()
 
         for line in mixer_output:
             if ': values=' in line:
@@ -80,7 +82,7 @@ def set_audio_output_hdmi():
             print("Audio not configured to HDMI - updating...")
             with open(os.devnull, 'w') as FNULL:
                 subprocess.call(['amixer', 'cset', 'numid=3', '2'], stdout=FNULL)
-            subprocess.call(['sudo', '/etc/init.d/alsa-utils', 'restart'])
+                subprocess.call(['sudo', '/etc/init.d/alsa-utils', 'restart'], stdout=FNULL)
 
         print("OK")
         return True
