@@ -66,7 +66,10 @@ def set_audio_output_hdmi():
     try:
         interface = None
 
-        mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3']).splitlines()
+        if sys.version_info < (3, 0):
+            mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3']).splitlines()
+        else:
+            mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3']).decode("utf-8").splitlines()
 
         for line in mixer_output:
             if ': values=' in line:
