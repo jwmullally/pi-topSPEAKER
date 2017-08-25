@@ -23,8 +23,9 @@ def _set_write_to_speaker_enabled(address, enable):
         _i2c_bus = smbus.SMBus(_bus_id)
         value = 0x01 if enable else 0x00
         _i2c_bus.write_byte_data(address, _chip_enable_reg, value)
-    except:
-        print("Failed to write to pi-topSPEAKER")
+
+    except Exception as e:
+        print("Failed to write to pi-topSPEAKER: " + str(e))
         return False
     
     return True
@@ -55,8 +56,8 @@ def _parse_playback_mode_file(mode):
 
         return True
 
-    except:
-        print("Failed to write configuration data to pi-topSPEAKER")
+    except Exception as e:
+        print("Failed to write configuration data to pi-topSPEAKER: " + str(e))
         return False
 
 def set_audio_output_hdmi():
@@ -68,10 +69,10 @@ def set_audio_output_hdmi():
 
         if sys.version_info < (3, 0):
             with open(os.devnull, 'w') as FNULL:
-                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stdout=FNULL).splitlines()
+                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stderr=FNULL).splitlines()
         else:
             with open(os.devnull, 'w') as FNULL:
-                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stdout=FNULL).decode("utf-8").splitlines()
+                mixer_output = subprocess.check_output(['amixer', 'cget', 'numid=3'], stderr=FNULL).decode("utf-8").splitlines()
 
         for line in mixer_output:
             if ': values=' in line:
@@ -81,14 +82,14 @@ def set_audio_output_hdmi():
         if interface != '2' and interface != None:
             print("Audio not configured to HDMI - updating...")
             with open(os.devnull, 'w') as FNULL:
-                subprocess.call(['amixer', 'cset', 'numid=3', '2'], stdout=FNULL)
-                subprocess.call(['sudo', '/etc/init.d/alsa-utils', 'restart'], stdout=FNULL)
+                subprocess.call(['amixer', 'cset', 'numid=3', '2'], stdout=FNULL, stderr=FNULL)
+                subprocess.call(['sudo', '/etc/init.d/alsa-utils', 'restart'], stdout=FNULL, stderr=FNULL)
 
         print("OK")
         return True
 
-    except:
-        print("There was an error setting audio output to HDMI!")
+    except Exception as e:
+        print("There was an error setting audio output to HDMI: " + str(e))
         return False
 
 def enable(mode):
