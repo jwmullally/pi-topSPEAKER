@@ -66,7 +66,7 @@ The 3-way hardware switch changes the primary I2C address of the pi-topSPEAKER o
 As mentioned earlier, pi-topSPEAKER needs to be initialised each time it is powered in order to function. This is because the TAS2505's signal processing blocks are programmable, allowing for custom configuration (such as tuning for high noise rejection and low group delay, as well as various other signal processing operations, such as audio effects and frequency shaping) after manufacture.
 
 #### Advanced Configuration
-See the [Manual Initialisation wiki page](https://github.com/pi-top/pi-topSPEAKER/wiki/Manual-Initialisation) for this repository.
+See the [Manual Initialisation instructions](https://github.com/pi-top/pi-topSPEAKER/tree/master/manual-install) for advanced configuration information.
 
 ## <a name="software"></a> Software
 
@@ -98,7 +98,7 @@ This will install the ptspeaker Python library, as well as its dependencies, inc
 
 #### <a name="software-pt-os"></a> Manual Installation
 
-For more information about how the pi-topSPEAKER is initialised, and how you can do this manually, see the wiki page [here](https://github.com/pi-top/pi-topSPEAKER/wiki/Manual-Initialisation).
+For more information about how the pi-topSPEAKER is initialised, and how you can do this manually, see the Manual Initialisation instructions in [this](https://github.com/pi-top/pi-topSPEAKER/tree/master/manual-install) folder.
 
 ## <a name="support"></a> Documentation & Support
 
