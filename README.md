@@ -1,4 +1,4 @@
-# pi-topSPEAKER
+# pi-topSPEAKER (v1 and v2)
 
 ![Image of pi-topSPEAKER](https://static.pi-top.com/images/speaker-small.png "Image of pi-topSPEAKER")
 
