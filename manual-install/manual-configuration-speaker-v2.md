@@ -25,9 +25,9 @@ I2S enabling/disabling and volume control configuration form part of the [genera
     pt-i2s enable
     pt-i2s disable
 
-Volume control for pi-topPULSE can be enabled by loading soundcard device information with the following command (with a pi-topPULSE connected, and with I2S enabled), followed by a reboot, using [hifiberry-alsactl.restore](https://github.com/pi-top/Device-Management/blob/master/src/i2s/hifiberry-alsactl.restore):
+Volume control for pi-topSPEAKER v2 can be enabled by loading soundcard device information with the following command (with a pi-topSPEAKER v2 connected, and with I2S enabled), followed by a reboot, using [hifiberry-alsactl.restore](https://github.com/pi-top/Device-Management/blob/master/src/i2s/hifiberry-alsactl.restore):
 
-    /usr/sbin/alsactl -f /etc/pi-top/.i2s-vol/hifiberry-alsactl.restore restore
+    /usr/sbin/alsactl -f hifiberry-alsactl.restore restore
 
 ##### Enabling HDMI to I2S on the pi-top v2
 
