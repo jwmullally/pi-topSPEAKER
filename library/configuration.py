@@ -51,7 +51,7 @@ def _set_write_to_v1_speaker_enabled(address, enable):
     except Exception as e:
         PTLogger.info("Failed to write to pi-topSPEAKER: " + str(e))
         return False
-    
+
     return True
 
 
@@ -66,16 +66,22 @@ def _parse_v1_speaker_playback_mode_file(mode):
                 if (line[0] == "W") or (line[0].lower() == mode):
                     array = line.split()
                     if len(array) < 4:
-                        PTLogger.info("Error parsing line " + str(index) + " - exiting...")
+                        PTLogger.info(
+                            "Error parsing line " + str(index) + " - exiting..."
+                        )
                         sys.exit(0)
                     else:
                         # Write all values from 4th to the end of the line
 
                         if len(array) > 3:
-                            values = [int(i,16) for i in array[3:]]
-                            _I2C_BUS.write_i2c_block_data(_v1_i2c_addr, int(array[2],16), values)
+                            values = [int(i, 16) for i in array[3:]]
+                            _I2C_BUS.write_i2c_block_data(
+                                _v1_i2c_addr, int(array[2], 16), values
+                            )
                         else:
-                            _I2C_BUS.write_byte_data(_v1_i2c_addr, int(array[2],16), int(array[3],16))
+                            _I2C_BUS.write_byte_data(
+                                _v1_i2c_addr, int(array[2], 16), int(array[3], 16)
+                            )
                 index = index + 1
 
         return True
@@ -93,13 +99,13 @@ def _enable_v1_speaker(mode):
         return None
 
     if mode == "l" or str(mode) == "71":
-        mode="l"
+        mode = "l"
         address = 0x71
     elif mode == "r" or str(mode) == "72":
-        mode="r"
+        mode = "r"
         address = 0x72
     elif mode == "m" or str(mode) == "73":
-        mode="m"
+        mode = "m"
         address = 0x73
     else:
         PTLogger.info("Mode not recognised")
@@ -138,7 +144,7 @@ def _initialise_v1_hub_v1_speaker(mode):
         _enable_i2c_if_disabled()
         enabled = _enable_v1_speaker(mode)
 
-    reboot_required = (HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required)
+    reboot_required = HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required
     enabled = enabled and not reboot_required
 
     v2_hub_hdmi_to_i2s_required = False
@@ -164,7 +170,7 @@ def _initialise_v1_hub_v2_speaker():
         PTLogger.debug("Initialising pi-topSPEAKER...")
         enabled = True
 
-    reboot_required = (HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required)
+    reboot_required = HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required
     enabled = enabled and not reboot_required
 
     v2_hub_hdmi_to_i2s_required = False
@@ -190,9 +196,9 @@ def _initialise_v2_hub_v2_speaker():
         _enable_i2c_if_disabled()
         enabled = True
 
-    reboot_required = (HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required)
+    reboot_required = HDMI.set_hdmi_drive_in_boot_config(2) or reboot_required
     enabled = enabled and not reboot_required
-    
+
     v2_hub_hdmi_to_i2s_required = True
 
     return enabled, reboot_required, v2_hub_hdmi_to_i2s_required
@@ -211,31 +217,42 @@ def enable_device():
     reboot_required = False
     v2_hub_hdmi_to_i2s_required = False
 
-    is_pi_top = (_host_device_id == DeviceID.pi_top)
-    is_pi_top_ceed = (_host_device_id == DeviceID.pi_top_ceed)
-    hub_is_v1 = (is_pi_top or is_pi_top_ceed)
+    is_pi_top = _host_device_id == DeviceID.pi_top
+    is_pi_top_ceed = _host_device_id == DeviceID.pi_top_ceed
+    hub_is_v1 = is_pi_top or is_pi_top_ceed
 
-    is_pi_top_v2 = (_host_device_id == DeviceID.pi_top_v2)
+    is_pi_top_v2 = _host_device_id == DeviceID.pi_top_v2
 
     if is_pi_top_v2:
-        if 'pi-topSPEAKER-v1' in _speaker_type_name:
+        if "pi-topSPEAKER-v1" in _speaker_type_name:
             PTLogger.info("pi-topSPEAKER v1 is not supported on pi-top v2")
-        elif 'pi-topSPEAKER-v2' in _speaker_type_name:
-            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = _initialise_v2_hub_v2_speaker()
+        elif "pi-topSPEAKER-v2" in _speaker_type_name:
+            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = (
+                _initialise_v2_hub_v2_speaker()
+            )
         else:
             PTLogger.error("Error - unrecognised device: " + _speaker_type_name)
     elif hub_is_v1 or (_host_device_id == DeviceID.unknown):
-        if 'pi-topSPEAKER-v1-' in _speaker_type_name:
-            mode_long = _speaker_type_name.replace('pi-topSPEAKER-v1-', '')
+        if "pi-topSPEAKER-v1-" in _speaker_type_name:
+            mode_long = _speaker_type_name.replace("pi-topSPEAKER-v1-", "")
             mode_first_lower_char = mode_long[0].lower()
-            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = _initialise_v1_hub_v1_speaker(mode_first_lower_char)
-        elif 'pi-topSPEAKER-v2' in _speaker_type_name:
-            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = _initialise_v1_hub_v2_speaker()
+            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = _initialise_v1_hub_v1_speaker(
+                mode_first_lower_char
+            )
+        elif "pi-topSPEAKER-v2" in _speaker_type_name:
+            enabled, reboot_required, v2_hub_hdmi_to_i2s_required = (
+                _initialise_v1_hub_v2_speaker()
+            )
         else:
             PTLogger.error("Error - unrecognised device: " + _speaker_type_name)
 
     else:
-        PTLogger.error("Error - unrecognised device ID '" + str(_host_device_id) + "' - unsure how to initialise " + _speaker_type_name)
+        PTLogger.error(
+            "Error - unrecognised device ID '"
+            + str(_host_device_id)
+            + "' - unsure how to initialise "
+            + _speaker_type_name
+        )
 
     return enabled, reboot_required, v2_hub_hdmi_to_i2s_required
 
