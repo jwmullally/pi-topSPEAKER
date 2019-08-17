@@ -52,7 +52,7 @@ Now save the following script to a file, e.g. `/tmp/pt-hdmi-to-i2s`:
     if (len(sys.argv) != 2):
         print("Usage: " + sys.argv[0] + " <enable|disable>")
         sys.exit(1)
-    elif (sys.argv[1] == "enable" or sys.argv[1] == "disable"):
+    elif (sys.argv[1] != "enable" and sys.argv[1] != "disable"):
         print("Usage: " + sys.argv[0] + " <enable|disable>")
         sys.exit(1)
 
@@ -60,7 +60,7 @@ Now save the following script to a file, e.g. `/tmp/pt-hdmi-to-i2s`:
         hub = I2CDevice("/dev/i2c-1", 0x10)
         hub.connect()
 
-        audio_control = hub.read_unsigned_byte(AUD__CONFIG)
+        audio_settings = hub.read_unsigned_byte(AUD__CONFIG)
 
         if (sys.argv[1] == "enable"):
             hub.write_byte(AUD__CONFIG, audio_settings | AUD__CONFIG__HDMI)
@@ -114,3 +114,27 @@ Assuming that you have done this correctly, you should be able to initialise the
         print("Failed to enable pi-topSPEAKER")
 
 This function will configure the pi-topSPEAKER to default values, and enable speaker functionality.
+
+
+## Automatically running on startup
+
+To run any of the above scripts on startup, you can use the following example systemd unit file, saved at `/etc/systemd/system/pt-speaker-config.service`:
+
+    [Unit]
+    Description=Directly configure pi-top speaker audio
+    Wants=pt-device-manager.service
+    After=pt-device-manager.service
+    
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/local/sbin/pt-speaker-config enable
+    RemainAfterExit=true
+    ExecStop=/usr/local/sbin/pt-speaker-config disable
+    StandardOutput=journal
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+Enable at startup with:
+
+    systemctl enable pt-speaker-config
